@@ -3,9 +3,9 @@
     "name": "demoMovieApp",
     "slug": "demoMovieApp",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "protrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "demomovieapp",
+    "scheme": "movies",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
