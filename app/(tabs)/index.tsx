@@ -3,7 +3,6 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  ImageBackground,
   Image,
   ActivityIndicator,
   FlatList,
