@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 ce5bfc918c3b480bfe58c426f1be64741dec261e Ankur <am8468616@gmail.com> 1760016179 +0530	branch: Created from HEAD
+ce5bfc918c3b480bfe58c426f1be64741dec261e d41a2d7be0faa4360b3bb18388f67394816706c4 Ankur <am8468616@gmail.com> 1760100766 +0530	commit: nativewind and tailwind setup
+d41a2d7be0faa4360b3bb18388f67394816706c4 f598a04caf53220e1c40d4a6236fc485c11465c9 Ankur <am8468616@gmail.com> 1760176542 +0530	commit: routing setup with resources addition
+f598a04caf53220e1c40d4a6236fc485c11465c9 c5d93fb8b4e987eaa4f3849222ca7fd68da72aee Ankur <am8468616@gmail.com> 1760256296 +0530	commit: home UI setup and design
+c5d93fb8b4e987eaa4f3849222ca7fd68da72aee 5bc2a17f159b4d94588417fa3e2035a5f3f86c40 Ankur <am8468616@gmail.com> 1760263096 +0530	commit: movie fetching endpoints established
+5bc2a17f159b4d94588417fa3e2035a5f3f86c40 92ab2847c713da2ff43a1fe4588efe857db545bc Ankur <am8468616@gmail.com> 1760264300 +0530	commit: custom hook implemented to fetch movies and details
+92ab2847c713da2ff43a1fe4588efe857db545bc ae404cd16eb8ea3b763c7a674527110ecb904c23 Ankur <am8468616@gmail.com> 1760281805 +0530	commit: movie data and card component handling for home screen
+ae404cd16eb8ea3b763c7a674527110ecb904c23 729aa375881084b2220417eec80f5ab342b5f90e Ankur <am8468616@gmail.com> 1760288805 +0530	commit: search feature enabled and page setup
+729aa375881084b2220417eec80f5ab342b5f90e cabbd5712e3ab547d1f903a1eeb44b55157a1dd5 Ankur <am8468616@gmail.com> 1760412197 +0530	commit: Stop tracking .env file - remove from Git but keep in .gitignore
