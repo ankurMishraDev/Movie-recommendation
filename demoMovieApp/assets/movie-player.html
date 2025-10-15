@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Player</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f0d23, #1a1a2e);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        
+        .player-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .video-placeholder {
+            width: 90%;
+            max-width: 1200px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%), 
+                        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            opacity: 0.1;
+        }
+        
+        .play-icon {
+            font-size: 4rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .play-icon:hover {
+            transform: scale(1.1);
+            color: #ff5252;
+        }
+        
+        .movie-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .movie-info {
+            font-size: 1rem;
+            opacity: 0.7;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .loading-animation {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .demo-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <button class="back-btn" onclick="goBack()">← Back</button>
+        
+        <div class="video-placeholder">
+            <div class="loading-animation" id="loadingSpinner"></div>
+            <div class="play-icon" id="playButton" onclick="startDemo()">▶</div>
+            <div class="movie-title" id="movieTitle">Movie Player</div>
+            <div class="movie-info" id="movieInfo">Click play to start watching</div>
+        </div>
+        
+        <div class="demo-message">
+            <h3>🎬 Demo Movie Player</h3>
+            <p>This is a demo movie player interface. In a real app, you would integrate with video streaming services like YouTube, Vimeo, or your own video hosting solution.</p>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" onclick="togglePlay()">⏯ Play/Pause</button>
+            <button class="control-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+            <button class="control-btn" onclick="changeQuality()">⚙ Quality</button>
+        </div>
+    </div>
+
+    <script>
+        // Get movie data from URL parameters
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // Initialize with movie data
+        function initializePlayer() {
+            const movieTitle = getUrlParameter('title') || 'Movie Player';
+            const movieId = getUrlParameter('id') || 'unknown';
+            const year = getUrlParameter('year') || new Date().getFullYear();
+            
+            document.getElementById('movieTitle').textContent = movieTitle;
+            document.getElementById('movieInfo').textContent = `Movie ID: ${movieId} | Year: ${year}`;
+            document.title = `Playing: ${movieTitle}`;
+        }
+        
+        function startDemo() {
+            const playButton = document.getElementById('playButton');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const movieInfo = document.getElementById('movieInfo');
+            
+            // Hide play button and show loading
+            playButton.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+            movieInfo.textContent = 'Loading video...';
+            
+            // Simulate loading
+            setTimeout(() => {
+                loadingSpinner.style.display = 'none';
+                movieInfo.textContent = 'Demo: Video would play here in a real implementation';
+                
+                // Show a demo playing state
+                const videoPlaceholder = document.querySelector('.video-placeholder');
+                videoPlaceholder.style.background = 'linear-gradient(45deg, #1a1a2e, #16213e)';
+                videoPlaceholder.innerHTML += '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.2rem;">🎬 Video Playing...</div>';
+            }, 2000);
+        }
+        
+        function togglePlay() {
+            alert('Demo: Play/Pause functionality would be implemented here');
+        }
+        
+        function toggleFullscreen() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.documentElement.requestFullscreen();
+            }
+        }
+        
+        function changeQuality() {
+            alert('Demo: Quality selection would be implemented here\n(480p, 720p, 1080p, 4K)');
+        }
+        
+        function goBack() {
+            // Try to go back in browser history
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // If no history, close the window or redirect
+                window.close();
+            }
+        }
+        
+        // Initialize when page loads
+        window.onload = initializePlayer;
+        
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            switch(event.code) {
+                case 'Space':
+                    event.preventDefault();
+                    togglePlay();
+                    break;
+                case 'KeyF':
+                    toggleFullscreen();
+                    break;
+                case 'Escape':
+                    goBack();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
